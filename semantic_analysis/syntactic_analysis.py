@@ -1,3 +1,4 @@
+import nltk
 
 def perform_syntactic_analysis(tokens):
     """
@@ -9,6 +10,10 @@ def perform_syntactic_analysis(tokens):
     Returns:
         A representation of the syntactic structure.
     """
-    # Placeholder for syntactic analysis implementation
     print("Performing syntactic analysis...")
-    return {}
+    try:
+        nltk.data.find('taggers/averaged_perceptron_tagger')
+    except LookupError:
+        print("NLTK's 'averaged_perceptron_tagger' not found. Please download it by running: python -m nltk.downloader averaged_perceptron_tagger")
+        return []
+    return nltk.pos_tag(tokens)

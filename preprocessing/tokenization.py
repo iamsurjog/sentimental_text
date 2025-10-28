@@ -1,3 +1,4 @@
+import nltk
 
 def tokenize(text):
     """
@@ -9,4 +10,4 @@ def tokenize(text):
     Returns:
         A list of tokens.
     """
-    return text.split()
+    return nltk.word_tokenize(text)

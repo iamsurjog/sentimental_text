@@ -1,3 +1,4 @@
+import numpy as np
 
 def extract_semantic_features(embeddings):
     """
@@ -9,6 +10,15 @@ def extract_semantic_features(embeddings):
     Returns:
         A representation of semantic features.
     """
-    # Placeholder for semantic feature extraction implementation
     print("Extracting semantic features...")
-    return {}
+    if len(embeddings) == 0:
+        return np.zeros(300)  # Assuming a 300-dimensional embedding
+
+    resized_embeddings = []
+    for emb in embeddings:
+        emb = np.array(emb)
+        if emb.shape[0] != 300:
+            emb = np.resize(emb, (300,))
+        resized_embeddings.append(emb)
+
+    return np.mean(resized_embeddings, axis=0)

@@ -56,10 +56,12 @@ def main():
 
     # Semantic Analysis Module
     print("\n--- Semantic Analysis Module ---")
-    semantic_features = extract_semantic_features(word2vec_embeddings + bert_embeddings) # Combine embeddings for semantic features
+    word2vec_embeddings_list = [embedding.tolist() for embedding in word2vec_embeddings]
+    bert_embeddings_list = bert_embeddings.squeeze(0).tolist()
+    semantic_features = extract_semantic_features(word2vec_embeddings_list + bert_embeddings_list) # Combine embeddings for semantic features
     print(f"Semantic Features (placeholder): {semantic_features}")
 
-    context_understanding = understand_context(raw_text, word2vec_embeddings + bert_embeddings)
+    context_understanding = understand_context(raw_text, word2vec_embeddings_list + bert_embeddings_list)
     print(f"Context Understanding (placeholder): {context_understanding}")
 
     syntactic_analysis_result = perform_syntactic_analysis(processed_tokens)

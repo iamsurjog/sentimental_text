@@ -1,3 +1,10 @@
+import nltk
+
+# Ensure you have the required NLTK data downloaded
+# nltk.download('wordnet')
+# nltk.download('omw-1.4')
+
+lemmatizer = nltk.stem.WordNetLemmatizer()
 
 def lemmatize(tokens):
     """
@@ -9,5 +16,4 @@ def lemmatize(tokens):
     Returns:
         A list of lemmatized tokens.
     """
-    # This is a placeholder. A real implementation would use a library like NLTK or SpaCy.
-    return tokens
+    return [lemmatizer.lemmatize(token) for token in tokens]
