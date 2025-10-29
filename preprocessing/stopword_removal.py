@@ -1,5 +1,13 @@
 
-STOPWORDS = set(['a', 'an', 'the', 'in', 'on', 'at'])
+from nltk.corpus import stopwords
+import nltk
+
+try:
+    stopwords.words('english')
+except LookupError:
+    nltk.download('stopwords')
+
+STOPWORDS = set(stopwords.words('english'))
 
 def remove_stopwords(tokens):
     """

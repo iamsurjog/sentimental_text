@@ -1,35 +1,57 @@
+
 from gensim.models import Word2Vec
 import numpy as np
+import gensim.downloader as api
 
 def get_word2vec_embeddings(tokens):
     """
-    Generates Word2Vec embeddings for a list of tokens.
+    Generates Word2Vec embeddings for a list of tokens using a pre-trained model.
     Args:
         tokens: A list of tokens.
     Returns:
         A list of Word2Vec embeddings.
     """
     print("Generating Word2Vec embeddings...")
-    model = Word2Vec([tokens], min_count=1)
-    return [model.wv[token] for token in tokens]
+    # Load pre-trained Word2Vec model
+    try:
+        model = api.load("word2vec-google-news-300")
+    except ValueError:
+        print("Downloading word2vec-google-news-300 model...")
+        model = api.load("word2vec-google-news-300")
+        
+    return [model[token] if token in model else np.zeros(300) for token in tokens]
 
-def get_glove_embeddings(tokens):
+def load_glove_model(glove_file):
+    """
+    Loads a GloVe model from a file.
+
+    Args:
+        glove_file: The path to the GloVe file.
+
+    Returns:
+        A dictionary mapping words to their embeddings.
+    """
+    print(f"Loading GloVe model from {glove_file}...")
+    embeddings_index = {}
+    with open(glove_file, 'r', encoding='utf-8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            coefs = np.asarray(values[1:], dtype='float32')
+            embeddings_index[word] = coefs
+    return embeddings_index
+
+def get_glove_embeddings(tokens, embeddings_index, embedding_dim=100):
     """
     Generates GloVe embeddings for a list of tokens.
 
     Args:
         tokens: A list of tokens.
+        embeddings_index: A dictionary mapping words to their embeddings.
+        embedding_dim: The dimension of the embeddings.
 
     Returns:
         A list of GloVe embeddings.
     """
-    # In a real-world scenario, you would load a pre-trained GloVe model.
-    # For this example, we'll simulate the process with a dummy dictionary.
-    print("Generating GloVe embeddings (dummy implementation)...")
-    dummy_glove_model = {
-        "the": np.array([0.1, 0.2, 0.3]),
-        "quick": np.array([0.4, 0.5, 0.6]),
-        "brown": np.array([0.7, 0.8, 0.9]),
-        "fox": np.array([0.1, 0.3, 0.5]),
-    }
-    return [dummy_glove_model.get(token, np.zeros(3)) for token in tokens]
+    print("Generating GloVe embeddings...")
+    return [embeddings_index.get(token, np.zeros(embedding_dim)) for token in tokens]

@@ -14,6 +14,5 @@ def perform_syntactic_analysis(tokens):
     try:
         nltk.data.find('taggers/averaged_perceptron_tagger')
     except LookupError:
-        print("NLTK's 'averaged_perceptron_tagger' not found. Please download it by running: python -m nltk.downloader averaged_perceptron_tagger")
-        return []
+        nltk.download('averaged_perceptron_tagger')
     return nltk.pos_tag(tokens)
