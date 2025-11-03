@@ -49,7 +49,7 @@ def main():
     # Feature Extraction Layer
     word2vec_embeddings = get_word2vec_embeddings(processed_tokens)
     
-    glove_file = 'glove.6B.100d.txt'
+    glove_file = 'glove.6B.50d.txt'
     embeddings_index = load_glove_model(glove_file)
     glove_embeddings = get_glove_embeddings(processed_tokens, embeddings_index)
     
@@ -95,13 +95,13 @@ def main():
 
     # Prediction Module
     prediction_result = "Not available"
-    if model_output is not None:
+    if args.output_type == "next_word_prediction":
+        prediction_result = predict_next_word(raw_text)
+    elif model_output is not None:
         if args.output_type == "text_classification":
-            prediction_result = classify_text(raw_text)
-        elif args.output_type == "next_word_prediction":
-            prediction_result = predict_next_word(raw_text)
+            prediction_result = classify_text(model_output)
         elif args.output_type == "sentiment_analysis":
-            prediction_result = analyze_sentiment(raw_text)
+            prediction_result = analyze_sentiment(model_output)
 
     # Output Layer
     predictions = {

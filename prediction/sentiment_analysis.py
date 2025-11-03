@@ -1,37 +1,30 @@
 import torch
-from transformers import DistilBertForSequenceClassification, DistilBertTokenizer
+import torch.nn.functional as F
 
-def analyze_sentiment(text):
+def analyze_sentiment(model_output):
     """
-    Analyzes the sentiment of the text using a pre-trained DistilBERT model.
+    Analyzes the sentiment from the model output.
 
     Args:
-        text: The input text to analyze.
+        model_output: The output from the deep learning model (logits).
 
     Returns:
         A sentiment label.
     """
     print("Analyzing sentiment...")
     
-    # Load pre-trained model and tokenizer
-    model_name = "distilbert-base-uncased-finetuned-sst-2-english"
-    try:
-        model = DistilBertForSequenceClassification.from_pretrained(model_name)
-        tokenizer = DistilBertTokenizer.from_pretrained(model_name)
-    except OSError:
-        print(f"Downloading model {model_name}...")
-        model = DistilBertForSequenceClassification.from_pretrained(model_name)
-        tokenizer = DistilBertTokenizer.from_pretrained(model_name)
+    if not isinstance(model_output, torch.Tensor):
+        # Handle case where model_output is not a tensor (e.g., "Not available")
+        return "Not available"
 
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
+    # The model output is the logits.
+    # Apply softmax to get probabilities.
+    probabilities = F.softmax(model_output, dim=1)
     
-    model.eval()
-    with torch.no_grad():
-        outputs = model(**inputs)
-        logits = outputs.logits
-        predicted_class_id = torch.argmax(logits, dim=1).item()
+    # Get the predicted class id
+    predicted_class_id = torch.argmax(probabilities, dim=1).item()
 
-    # The model is fine-tuned for sentiment analysis, so the labels are positive and negative.
-    labels = ["negative", "positive"]
+    # The labels are positive and negative.
+    labels = ["positive", "negative"]
     
     return labels[predicted_class_id]

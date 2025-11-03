@@ -17,7 +17,7 @@ class PositionalEncoding(nn.Module):
         return x + self.pe[:x.size(0), :]
 
 class TransformerModel(nn.Module):
-    def __init__(self, d_model, nhead, num_encoder_layers, num_decoder_layers, dim_feedforward):
+    def __init__(self, d_model, nhead, num_encoder_layers, num_decoder_layers, dim_feedforward, num_classes):
         super(TransformerModel, self).__init__()
         self.pos_encoder = PositionalEncoding(d_model)
         self.transformer = nn.Transformer(
@@ -27,14 +27,18 @@ class TransformerModel(nn.Module):
             num_decoder_layers=num_decoder_layers, 
             dim_feedforward=dim_feedforward
         )
+        self.fc = nn.Linear(d_model, num_classes)
 
     def forward(self, src, tgt):
         src = self.pos_encoder(src)
         tgt = self.pos_encoder(tgt)
         output = self.transformer(src, tgt)
+        # Use the output of the first token (CLS token) for classification
+        output = output[0, :, :]
+        output = self.fc(output)
         return output
 
-def run_transformer(features, d_model=300, nhead=6, num_encoder_layers=2, num_decoder_layers=2, dim_feedforward=1024):
+def run_transformer(features, d_model=300, nhead=6, num_encoder_layers=2, num_decoder_layers=2, dim_feedforward=1024, num_classes=2):
     """
     Runs a Transformer model on the given features.
 
@@ -45,6 +49,7 @@ def run_transformer(features, d_model=300, nhead=6, num_encoder_layers=2, num_de
         num_encoder_layers: The number of encoder layers.
         num_decoder_layers: The number of decoder layers.
         dim_feedforward: The dimension of the feedforward network.
+        num_classes: The number of output classes.
 
     Returns:
         The output of the Transformer model.
@@ -58,7 +63,7 @@ def run_transformer(features, d_model=300, nhead=6, num_encoder_layers=2, num_de
     src = features
     tgt = features
 
-    model = TransformerModel(d_model, nhead, num_encoder_layers, num_decoder_layers, dim_feedforward)
+    model = TransformerModel(d_model, nhead, num_encoder_layers, num_decoder_layers, dim_feedforward, num_classes)
     model.eval()
     with torch.no_grad():
         output = model(src, tgt)
