@@ -37,13 +37,14 @@ def main():
     The main function of the CLI tool.
     """
     parser = argparse.ArgumentParser(description="A modular CLI tool for sentiment analysis.")
-    parser.add_argument("file", type=str, help="The path to the input text file to analyze.")
+    parser.add_argument("text", type=str, help="The path to the input text file to analyze.")
     parser.add_argument("--model_type", type=str, default="lstm", choices=["lstm", "rnn", "transformer", "attention"], help="The type of model to use.")
     parser.add_argument("--output_type", type=str, default="sentiment_analysis", choices=["text_classification", "next_word_prediction", "sentiment_analysis"], help="The type of output to get.")
     args = parser.parse_args()
 
-    with open(args.file, 'r') as f:
-        raw_text = f.read()
+    # with open(args.file, 'r') as f:
+        # raw_text = f.read()
+    raw_text = args.text
     processed_tokens = preprocess_text(raw_text)
 
     # Feature Extraction Layer
@@ -110,6 +111,7 @@ def main():
         "Context Understanding": context_understanding,
     }
     display_results(predictions)
+    return predictions [args.output_type.replace('_', ' ').title()]
 
 if __name__ == '__main__':
     main()
