@@ -1,0 +1,61 @@
+input_text,model_type,output_type,result
+this food is good,lstm,text_classification,positive
+this food is good,lstm,next_word_prediction, for
+this food is good,lstm,sentiment_analysis,negative
+this food is good,rnn,text_classification,negative
+this food is good,rnn,next_word_prediction, for
+this food is good,rnn,sentiment_analysis,positive
+this food is good,transformer,text_classification,negative
+this food is good,transformer,next_word_prediction, for
+this food is good,transformer,sentiment_analysis,negative
+this food is good,attention,text_classification,ERROR: IndexError - list index out of range
+this food is good,attention,next_word_prediction, for
+this food is good,attention,sentiment_analysis,ERROR: IndexError - list index out of range
+hello how are,lstm,text_classification,negative
+hello how are,lstm,next_word_prediction, you
+hello how are,lstm,sentiment_analysis,negative
+hello how are,rnn,text_classification,positive
+hello how are,rnn,next_word_prediction, you
+hello how are,rnn,sentiment_analysis,negative
+hello how are,transformer,text_classification,positive
+hello how are,transformer,next_word_prediction, you
+hello how are,transformer,sentiment_analysis,positive
+hello how are,attention,text_classification,ERROR: IndexError - list index out of range
+hello how are,attention,next_word_prediction, you
+hello how are,attention,sentiment_analysis,ERROR: IndexError - list index out of range
+it is raining cats and dogs,lstm,text_classification,positive
+it is raining cats and dogs,lstm,next_word_prediction,.
+it is raining cats and dogs,lstm,sentiment_analysis,positive
+it is raining cats and dogs,rnn,text_classification,negative
+it is raining cats and dogs,rnn,next_word_prediction,.
+it is raining cats and dogs,rnn,sentiment_analysis,negative
+it is raining cats and dogs,transformer,text_classification,positive
+it is raining cats and dogs,transformer,next_word_prediction,.
+it is raining cats and dogs,transformer,sentiment_analysis,negative
+it is raining cats and dogs,attention,text_classification,ERROR: IndexError - list index out of range
+it is raining cats and dogs,attention,next_word_prediction,.
+it is raining cats and dogs,attention,sentiment_analysis,ERROR: IndexError - list index out of range
+I love dogs,lstm,text_classification,positive
+I love dogs,lstm,next_word_prediction,","
+I love dogs,lstm,sentiment_analysis,positive
+I love dogs,rnn,text_classification,positive
+I love dogs,rnn,next_word_prediction,","
+I love dogs,rnn,sentiment_analysis,negative
+I love dogs,transformer,text_classification,positive
+I love dogs,transformer,next_word_prediction,","
+I love dogs,transformer,sentiment_analysis,negative
+I love dogs,attention,text_classification,ERROR: IndexError - list index out of range
+I love dogs,attention,next_word_prediction,","
+I love dogs,attention,sentiment_analysis,ERROR: IndexError - list index out of range
+I hate cats,lstm,text_classification,positive
+I hate cats,lstm,next_word_prediction,.
+I hate cats,lstm,sentiment_analysis,positive
+I hate cats,rnn,text_classification,negative
+I hate cats,rnn,next_word_prediction,.
+I hate cats,rnn,sentiment_analysis,negative
+I hate cats,transformer,text_classification,positive
+I hate cats,transformer,next_word_prediction,.
+I hate cats,transformer,sentiment_analysis,negative
+I hate cats,attention,text_classification,ERROR: IndexError - list index out of range
+I hate cats,attention,next_word_prediction,.
+I hate cats,attention,sentiment_analysis,ERROR: IndexError - list index out of range
