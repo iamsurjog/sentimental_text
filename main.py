@@ -37,19 +37,20 @@ def main():
     The main function of the CLI tool.
     """
     parser = argparse.ArgumentParser(description="A modular CLI tool for sentiment analysis.")
-    parser.add_argument("file", type=str, help="The path to the input text file to analyze.")
+    parser.add_argument("text", type=str, help="The path to the input text file to analyze.")
     parser.add_argument("--model_type", type=str, default="lstm", choices=["lstm", "rnn", "transformer", "attention"], help="The type of model to use.")
     parser.add_argument("--output_type", type=str, default="sentiment_analysis", choices=["text_classification", "next_word_prediction", "sentiment_analysis"], help="The type of output to get.")
     args = parser.parse_args()
 
-    with open(args.file, 'r') as f:
-        raw_text = f.read()
+    # with open(args.file, 'r') as f:
+        # raw_text = f.read()
+    raw_text = args.text
     processed_tokens = preprocess_text(raw_text)
 
     # Feature Extraction Layer
     word2vec_embeddings = get_word2vec_embeddings(processed_tokens)
     
-    glove_file = 'glove.6B.100d.txt'
+    glove_file = 'glove.6B.50d.txt'
     embeddings_index = load_glove_model(glove_file)
     glove_embeddings = get_glove_embeddings(processed_tokens, embeddings_index)
     
@@ -95,13 +96,13 @@ def main():
 
     # Prediction Module
     prediction_result = "Not available"
-    if model_output is not None:
+    if args.output_type == "next_word_prediction":
+        prediction_result = predict_next_word(raw_text)
+    elif model_output is not None:
         if args.output_type == "text_classification":
-            prediction_result = classify_text(raw_text)
-        elif args.output_type == "next_word_prediction":
-            prediction_result = predict_next_word(raw_text)
+            prediction_result = classify_text(model_output)
         elif args.output_type == "sentiment_analysis":
-            prediction_result = analyze_sentiment(raw_text)
+            prediction_result = analyze_sentiment(model_output)
 
     # Output Layer
     predictions = {
@@ -110,6 +111,7 @@ def main():
         "Context Understanding": context_understanding,
     }
     display_results(predictions)
+    return predictions [args.output_type.replace('_', ' ').title()]
 
 if __name__ == '__main__':
     main()
